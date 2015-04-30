@@ -1,0 +1,14 @@
+.*\.o
+.*\.~\d+~
+blib/.*
+\.git
+\.gitignore
+Detective\.c
+Detective\.bs
+Makefile$
+Makefile\.old
+MANIFEST\.bak
+MYMETA\..*
+pm_to_blib
+build\.pl
+t/samples

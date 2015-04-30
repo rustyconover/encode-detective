@@ -1,0 +1,62 @@
+#!/home/ben/software/install/bin/perl
+use warnings;
+use strict;
+use Encode::Detective 'detect';
+my $max = 0x10000;
+if (@ARGV) {
+   for my $file (@ARGV) {
+       if (-f $file) {
+           open my $in, "<:raw", $file or die $!;
+           xyz ($file, $in);
+           close $in or die $!;
+       }
+   }  
+}
+else {
+    xyz ('stdin', *STDIN);
+}
+exit;
+
+sub xyz
+{
+    my ($file, $in) = @_;
+    my $text = '';
+    binmode $in, ":raw";
+    while (<$in>) {
+        $text .= $_;
+        if (length $text > $max) {
+            last;
+        }
+    }
+    my $encoding = detect ($text);
+    if (! $encoding) {
+        $encoding = 'unknown';
+    }
+    print "$file: $encoding\n";
+}
+
+=head1 NAME
+
+edetect - detect encoding of a file
+
+=head1 SYNOPSIS
+
+    edetect xyz.txt
+    xyz.txt: Big5
+
+Detect the encoding of the files specified on the command line.
+
+=head1 SEE ALSO
+
+L<Encode::Detective>.
+
+=head1 AUTHOR
+
+Ben Bullock, <bkb@cpan.org>
+
+=cut
+
+# Local variables:
+# mode: perl
+# End:
+
